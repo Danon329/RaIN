@@ -1,5 +1,7 @@
 using Godot;
 
+namespace Game.Entity;
+
 public partial class Player : CharacterBody2D
 {
     [Export]
@@ -11,22 +13,24 @@ public partial class Player : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
-        if (!IsOnFloor()) {
-            Velocity += new Vector2(0, gravity) * (float) delta;
+        if (!IsOnFloor())
+        {
+            Velocity += new Vector2(0, gravity) * (float)delta;
         }
 
         MovementLogic(delta);
-        GD.Print(Velocity);
         MoveAndSlide();
     }
 
-    private void MovementLogic(double delta) {
+    private void MovementLogic(double delta)
+    {
         // Input left and right
         float dir = Input.GetAxis("left", "right");
         Velocity = new Vector2(dir * speed, Velocity.Y);
 
         // Jumping
-        if (Input.IsActionPressed("jump") && IsOnFloor()) {
+        if (Input.IsActionPressed("jump") && IsOnFloor())
+        {
             Velocity = new Vector2(0, jump);
         }
     }
