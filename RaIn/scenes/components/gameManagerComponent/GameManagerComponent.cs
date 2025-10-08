@@ -28,7 +28,7 @@ public partial class GameManagerComponent : Node
 		currentWorld = (int) world;
 		GetNodes();
 
-		timer.Start(2);
+		timer.Start(60);
 
 		timer.Timeout += OnTimerTimeout;
 	}
@@ -62,5 +62,6 @@ public partial class GameManagerComponent : Node
 		// Signal to World to start World changing sequence
 		int newWorldNr = GetRandomWorld();
 		EmitSignal(SignalName.StartWorldChanging, newWorldNr);
+		GD.Print("Changing World");
 	}
 }

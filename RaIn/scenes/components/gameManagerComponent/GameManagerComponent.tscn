@@ -6,3 +6,4 @@
 script = ExtResource("1_tk0n2")
 
 [node name="TransitionTimer" type="Timer" parent="."]
+one_shot = true
