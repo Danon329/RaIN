@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bl5scdsfprknh"]
+
+[ext_resource type="Script" uid="uid://dgxtxgnapdkvi" path="res://scenes/components/gameManagerComponent/GameManagerComponent.cs" id="1_tk0n2"]
+
+[node name="GameManagerComponent" type="Node"]
+script = ExtResource("1_tk0n2")
+
+[node name="TransitionTimer" type="Timer" parent="."]
+one_shot = true

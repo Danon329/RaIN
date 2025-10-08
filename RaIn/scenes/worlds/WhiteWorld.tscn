@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=4 uid="uid://b4xjgjc1bpru2"]
+
+[ext_resource type="PackedScene" uid="uid://bl5scdsfprknh" path="res://scenes/components/gameManagerComponent/GameManagerComponent.tscn" id="1_t8xlc"]
+[ext_resource type="PackedScene" uid="uid://xdqr2y2kx5cm" path="res://scenes/components/worldTransitionComponent/WorldTransitionComponent.tscn" id="2_ws8mx"]
+[ext_resource type="TileSet" uid="uid://xsvcgxbbmx0f" path="res://resources/WorldTiles.tres" id="3_nbuho"]
+[ext_resource type="PackedScene" uid="uid://b13mjmpnlw106" path="res://scenes/player/Player.tscn" id="4_86388"]
+
+[node name="WhiteWorld" type="Node"]
+
+[node name="GameManagerComponent" parent="." instance=ExtResource("1_t8xlc")]
+world = 3
+
+[node name="WorldTransitionComponent" parent="." node_paths=PackedStringArray("gameManagerComponent", "player") instance=ExtResource("2_ws8mx")]
+gameManagerComponent = NodePath("../GameManagerComponent")
+player = NodePath("../Player")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAAAAAAAAQACAAEAAAABAAAAAQACAAEAAAACAAAAAQACAAEAAAADAAAAAQACAAEAAAAEAAAAAQACAAEAAAAFAAAAAQACAAEAAAAGAAAAAQACAAEAAAAHAAAAAQACAAEAAAAIAAAAAQACAAEAAAAJAAAAAQACAAEAAAA=")
+tile_set = ExtResource("3_nbuho")
+
+[node name="Player" parent="." instance=ExtResource("4_86388")]
+position = Vector2(94, -100)
