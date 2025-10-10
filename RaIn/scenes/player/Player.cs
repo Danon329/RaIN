@@ -11,7 +11,27 @@ public partial class Player : CharacterBody2D
     [Export]
     private float gravity = 1200f;
 
+    private Timer coyoteTimer;
+
+    private bool appliedCoyoteTime = true;
+    private bool jumpWasPressed = false;
+
+    public override void _Ready()
+    {
+        coyoteTimer = GetNode<Timer>("CoyoteTimer");
+        coyoteTimer.Timeout += OnCoyoteTimerTimeout;
+    }
+
     public override void _PhysicsProcess(double delta)
+    {
+        ApplyGravity(delta);
+        ResetCoyoteTime();
+
+        MovementLogic();
+        MoveAndSlide();
+    }
+
+    private void ApplyGravity(double delta)
     {
         if (!IsOnFloor())
         {
@@ -22,23 +42,45 @@ public partial class Player : CharacterBody2D
             Velocity += new Vector2(0, gravity) * (float)delta;
         }
 
-        MovementLogic(delta);
-        MoveAndSlide();
+        CheckForCoyoteTime();
     }
 
-    private void MovementLogic(double delta)
+    private void ResetCoyoteTime()
+    {
+        if (IsOnFloor())
+        {
+            appliedCoyoteTime = false;
+            jumpWasPressed = false;
+        }
+    }
+
+    private void CheckForCoyoteTime()
+    {
+        if (!IsOnFloor() && !appliedCoyoteTime && !jumpWasPressed && coyoteTimer.TimeLeft == 0)
+        {
+            coyoteTimer.Start(0.2);
+        }
+    }
+
+    private void MovementLogic()
     {
         // Input left and right
         float dir = Input.GetAxis("left", "right");
         Velocity = new Vector2(dir * speed, Velocity.Y);
 
-        // TODO: coyote time
         // Jumping
-        if (Input.IsActionPressed("jump") && IsOnFloor())
+        if (Input.IsActionPressed("jump") && IsOnFloor() || Input.IsActionPressed("jump") && !appliedCoyoteTime && !jumpWasPressed)
         {
             Velocity = new Vector2(0, jump);
+            jumpWasPressed = true;
         }
 
         // Think about Wall jump
+    }
+
+    private void OnCoyoteTimerTimeout()
+    {
+        appliedCoyoteTime = true;
+        jumpWasPressed = true;
     }
 }

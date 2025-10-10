@@ -20,3 +20,6 @@ position = Vector2(0, 12)
 shape = SubResource("RectangleShape2D_gfjak")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="CoyoteTimer" type="Timer" parent="."]
+one_shot = true
