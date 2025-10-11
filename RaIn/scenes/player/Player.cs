@@ -38,8 +38,9 @@ public partial class Player : CharacterBody2D
         ResetCoyoteTime();
 
         MovementLogic();
-
         MoveAndSlide();
+        GD.Print(IsOnWall());
+        FlipSprite();
     }
 
     private void ApplyGravity(double delta)
@@ -120,8 +121,8 @@ public partial class Player : CharacterBody2D
         if (Input.IsActionPressed("left") || Input.IsActionPressed("right"))
         {
             direction = Input.GetAxis("left", "right");
-            FlipSprite();
             Velocity = new Vector2(direction * speed, Velocity.Y);
+            FlipSprite();
         }
     }
 
@@ -138,7 +139,6 @@ public partial class Player : CharacterBody2D
     {
         if (IsOnWall() && !IsOnFloor())
         {
-            FlipSprite();
             if (IsOnWall() && GetLastMotion().X != 0)
             {
                 Velocity = Vector2.Zero;
@@ -150,22 +150,37 @@ public partial class Player : CharacterBody2D
                 Vector2 wallJumpVelocity = new Vector2(800f, -800f);
                 wallJumpVelocity = new Vector2(wallJumpVelocity.X * GetWallNormal().X, wallJumpVelocity.Y);
                 Velocity = wallJumpVelocity;
-                
+
                 jumpWasPressed = true;
                 breakFactor = 1;
             }
+            FlipSprite();
         }
     }
 
     private void FlipSprite()
     {
-        if (direction < 0 || GetWallNormal().X < 0)
+        if (Math.Round(Velocity.X) < 0)
         {
             sprite.FlipH = true;
         }
-        else if (direction > 0 || GetWallNormal().X > 0)
+        else if (Math.Round(Velocity.X) > 0)
         {
             sprite.FlipH = false;
+        }
+        else
+        {
+            if (IsOnWall())
+            {
+                if (GetWallNormal().X < 0)
+                {
+                    sprite.FlipH = true;
+                }
+                else if (GetWallNormal().X > 0)
+                {
+                    sprite.FlipH = false;
+                }
+            }
         }
     }
 
