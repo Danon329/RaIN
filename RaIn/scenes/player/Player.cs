@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 namespace Game.Entity;
@@ -12,6 +13,10 @@ public partial class Player : CharacterBody2D
     private float gravity = 1200f;
 
     private Timer coyoteTimer;
+    private Sprite2D sprite;
+
+    private float direction = 0;
+    private int breakFactor = 10;
 
     private bool appliedCoyoteTime = true;
     private bool jumpWasPressed = false;
@@ -19,21 +24,27 @@ public partial class Player : CharacterBody2D
     public override void _Ready()
     {
         coyoteTimer = GetNode<Timer>("CoyoteTimer");
+        sprite = GetNode<Sprite2D>("Sprite2D");
+
         coyoteTimer.Timeout += OnCoyoteTimerTimeout;
     }
 
     public override void _PhysicsProcess(double delta)
     {
+        GetDirection();
+
         ApplyGravity(delta);
+        ApplyBreak(delta);
         ResetCoyoteTime();
 
         MovementLogic();
+
         MoveAndSlide();
     }
 
     private void ApplyGravity(double delta)
     {
-        if (!IsOnFloor())
+        if (!IsOnFloor() && !IsOnWall())
         {
             if (Velocity.Y < 0 && !Input.IsActionPressed("jump"))
             {
@@ -41,8 +52,42 @@ public partial class Player : CharacterBody2D
             }
             Velocity += new Vector2(0, gravity) * (float)delta;
         }
+        else if (IsOnWall() && !IsOnFloor())
+        {
+            Velocity += new Vector2(0, gravity / 4) * (float)delta;
+            Mathf.Clamp(Velocity.Y, float.MinValue, gravity / 5);
+        }
 
         CheckForCoyoteTime();
+    }
+
+    private void ApplyBreak(double delta)
+    {
+        if (Math.Round(Velocity.X) != 0)
+        {
+            Velocity += new Vector2(gravity * breakFactor * -direction, 0) * (float)delta;
+        }
+        else
+        {
+            Velocity = new Vector2(0, Velocity.Y);
+            breakFactor = 10;
+        }
+    }
+
+    private void GetDirection()
+    {
+        if (Velocity.X > 0)
+        {
+            direction = 1;
+        }
+        else if (Velocity.X < 0)
+        {
+            direction = -1;
+        }
+        else
+        {
+            direction = 0;
+        }
     }
 
     private void ResetCoyoteTime()
@@ -64,23 +109,68 @@ public partial class Player : CharacterBody2D
 
     private void MovementLogic()
     {
-        // Input left and right
-        float dir = Input.GetAxis("left", "right");
-        Velocity = new Vector2(dir * speed, Velocity.Y);
+        Walk();
+        Jump();
+        WallJump();
+        // Dash
+    }
 
-        // Jumping
-        if (Input.IsActionPressed("jump") && IsOnFloor() || Input.IsActionPressed("jump") && !appliedCoyoteTime && !jumpWasPressed)
+    private void Walk()
+    {
+        if (Input.IsActionPressed("left") || Input.IsActionPressed("right"))
+        {
+            direction = Input.GetAxis("left", "right");
+            FlipSprite();
+            Velocity = new Vector2(direction * speed, Velocity.Y);
+        }
+    }
+
+    private void Jump()
+    {
+        if (Input.IsActionJustPressed("jump") && IsOnFloor() || Input.IsActionJustPressed("jump") && !appliedCoyoteTime && !jumpWasPressed)
         {
             Velocity = new Vector2(0, jump);
             jumpWasPressed = true;
         }
+    }
 
-        // Think about Wall jump
+    private void WallJump()
+    {
+        if (IsOnWall() && !IsOnFloor())
+        {
+            FlipSprite();
+            if (IsOnWall() && GetLastMotion().X != 0)
+            {
+                Velocity = Vector2.Zero;
+                jumpWasPressed = false;
+            }
+
+            if (Input.IsActionJustPressed("jump") && !jumpWasPressed)
+            {
+                Vector2 wallJumpVelocity = new Vector2(800f, -800f);
+                wallJumpVelocity = new Vector2(wallJumpVelocity.X * GetWallNormal().X, wallJumpVelocity.Y);
+                Velocity = wallJumpVelocity;
+                
+                jumpWasPressed = true;
+                breakFactor = 1;
+            }
+        }
+    }
+
+    private void FlipSprite()
+    {
+        if (direction < 0 || GetWallNormal().X < 0)
+        {
+            sprite.FlipH = true;
+        }
+        else if (direction > 0 || GetWallNormal().X > 0)
+        {
+            sprite.FlipH = false;
+        }
     }
 
     private void OnCoyoteTimerTimeout()
     {
         appliedCoyoteTime = true;
-        jumpWasPressed = true;
     }
 }
