@@ -20,6 +20,7 @@ public partial class Player : CharacterBody2D
 
     private bool appliedCoyoteTime = true;
     private bool jumpWasPressed = false;
+    private bool dashing = false;
 
     public override void _Ready()
     {
@@ -39,7 +40,6 @@ public partial class Player : CharacterBody2D
 
         MovementLogic();
         MoveAndSlide();
-        GD.Print(IsOnWall());
         FlipSprite();
     }
 
@@ -72,6 +72,7 @@ public partial class Player : CharacterBody2D
         {
             Velocity = new Vector2(0, Velocity.Y);
             breakFactor = 10;
+            dashing = false;
         }
     }
 
@@ -113,11 +114,15 @@ public partial class Player : CharacterBody2D
         Walk();
         Jump();
         WallJump();
-        // Dash
+        Dash();
     }
 
     private void Walk()
     {
+        if (dashing) {
+            return;
+        }
+
         if (Input.IsActionPressed("left") || Input.IsActionPressed("right"))
         {
             direction = Input.GetAxis("left", "right");
@@ -137,7 +142,7 @@ public partial class Player : CharacterBody2D
 
     private void WallJump()
     {
-        if (IsOnWall() && !IsOnFloor())
+        if (IsOnWallOnly() && !IsOnFloor())
         {
             if (IsOnWall() && GetLastMotion().X != 0)
             {
@@ -155,6 +160,16 @@ public partial class Player : CharacterBody2D
                 breakFactor = 1;
             }
             FlipSprite();
+        }
+    }
+
+    private void Dash() {
+        if (Input.IsActionJustPressed("dash")) {
+            int dir = sprite.FlipH ? -1 : 1;
+            Velocity = new Vector2(speed * 4 * dir, 0);
+
+            breakFactor = 10;
+            dashing = true;
         }
     }
 
