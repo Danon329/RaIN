@@ -19,8 +19,9 @@ public partial class GameManagerComponent : Node
 	[Export]
 	private Worlds world;
 
-	Timer timer;
-	int currentWorld = -1;
+	private Timer timer;
+
+	private int currentWorld = -1;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()

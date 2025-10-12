@@ -3,15 +3,12 @@
 [ext_resource type="Script" uid="uid://drte7ou1s5ob" path="res://scenes/player/Player.cs" id="1_gfjak"]
 [ext_resource type="Texture2D" uid="uid://swiypjke2p5t" path="res://assets/spritesheets/spritesheet-characters-default.png" id="1_wr5hl"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gfjak"]
-radius = 37.0
-height = 96.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gfjak"]
+size = Vector2(80, 100)
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
 script = ExtResource("1_gfjak")
-speed = 800.0
-gravity = 1800.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_wr5hl")
@@ -19,7 +16,18 @@ hframes = 8
 vframes = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 13)
-shape = SubResource("CapsuleShape2D_gfjak")
+position = Vector2(0, 12)
+shape = SubResource("RectangleShape2D_gfjak")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+limit_smoothed = true
+position_smoothing_speed = 1.0
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_left_margin = 0.1
+drag_top_margin = 0.1
+drag_right_margin = 0.1
+drag_bottom_margin = 0.1
+
+[node name="CoyoteTimer" type="Timer" parent="."]
+one_shot = true
