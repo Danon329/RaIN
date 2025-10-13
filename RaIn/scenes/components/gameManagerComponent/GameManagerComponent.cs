@@ -2,9 +2,10 @@ using Godot;
 
 namespace Game.Managers;
 
+[GlobalClass]
 public partial class GameManagerComponent : Node
 {
-	enum Worlds
+	public enum Worlds
 	{
 		Green,
 		Purple,
@@ -17,7 +18,9 @@ public partial class GameManagerComponent : Node
 	public delegate void StartWorldChangingEventHandler(int worldNr);
 
 	[Export]
-	private Worlds world;
+	private SaveManagerComponent saveManagerComponent;
+	[Export]
+	public Worlds World { get; private set; }
 
 	private Timer timer;
 
@@ -26,8 +29,9 @@ public partial class GameManagerComponent : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		currentWorld = (int) world;
+		currentWorld = (int)World;
 		GetNodes();
+		// Load SaveData for this World, if existing
 
 		timer.Start(60);
 

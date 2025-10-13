@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=4 uid="uid://bjp2bqcf6w1vx"]
+[gd_scene load_steps=6 format=4 uid="uid://bjp2bqcf6w1vx"]
 
 [ext_resource type="PackedScene" uid="uid://bl5scdsfprknh" path="res://scenes/components/gameManagerComponent/GameManagerComponent.tscn" id="1_nlqox"]
 [ext_resource type="PackedScene" uid="uid://b13mjmpnlw106" path="res://scenes/player/Player.tscn" id="2_l1fh5"]
 [ext_resource type="PackedScene" uid="uid://xdqr2y2kx5cm" path="res://scenes/components/worldTransitionComponent/WorldTransitionComponent.tscn" id="3_ldmwi"]
 [ext_resource type="TileSet" uid="uid://xsvcgxbbmx0f" path="res://resources/WorldTiles.tres" id="3_nlqox"]
+[ext_resource type="PackedScene" uid="uid://bqyrv22n2ttl3" path="res://scenes/components/saveManagerComponent/SaveManagerComponent.tscn" id="3_x7bqd"]
 
 [node name="GreenWorld" type="Node"]
 
@@ -12,6 +13,8 @@
 [node name="WorldTransitionComponent" parent="." node_paths=PackedStringArray("gameManagerComponent", "player") instance=ExtResource("3_ldmwi")]
 gameManagerComponent = NodePath("../GameManagerComponent")
 player = NodePath("../Player")
+
+[node name="SaveManagerComponent" parent="." instance=ExtResource("3_x7bqd")]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 tile_map_data = PackedByteArray("AAAAAAAAAQAGAA0AAAAAAAEAAQAGAA0AAAAAAAIAAQAGAA0AAAAAAAMAAQAGAA0AAAAAAAQAAQAGAA0AAAAAAAUAAQAGAA0AAAAAAAYAAQAGAA0AAAAAAAcAAQAGAA0AAAAAAAgAAQAGAA0AAAAAAAkAAQAGAA0AAAABAAkAAQAGAA0AAAACAAkAAQAGAA0AAAADAAkAAQAGAA0AAAAEAAkAAQAGAA0AAAAFAAkAAQAGAA0AAAAGAAkAAQAGAA0AAAAHAAkAAQAGAA0AAAAIAAkAAQAGAA0AAAAJAAkAAQAGAA0AAAAKAAkAAQAGAA0AAAALAAkAAQAGAA0AAAAMAAkAAQAGAA0AAAANAAkAAQAGAA0AAAAOAAkAAQAGAA0AAAAPAAkAAQAGAA0AAAAQAAkAAQAGAA0AAAARAAkAAQAGAA0AAAASAAkAAQAGAA0AAAAUAAkAAQAGAA0AAAAVAAkAAQAGAA0AAAATAAkAAQAGAA0AAAAWAAkAAQAGAA0AAAAXAAkAAQAGAA0AAAAYAAkAAQAGAA0AAAA=")

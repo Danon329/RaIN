@@ -10,6 +10,8 @@ public partial class WorldTransitionComponent : Node
 	[Export]
 	private GameManagerComponent gameManagerComponent;
 	[Export]
+	private SaveManagerComponent saveManagerComponent;
+	[Export]
 	private Player player;
 
 	// Create Array of String with Paths to possible Worlds
@@ -31,6 +33,7 @@ public partial class WorldTransitionComponent : Node
 
 	private void OnWorldChangingSignal(int worldNr)
 	{
+		// Save current world before loading next scene
 		PackedScene newWorldScene = GD.Load<PackedScene>(worldPaths[worldNr]);
 		GetTree().ChangeSceneToPacked(newWorldScene);
 	}
