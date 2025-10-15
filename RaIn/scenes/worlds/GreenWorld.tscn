@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=4 uid="uid://bjp2bqcf6w1vx"]
+[gd_scene load_steps=8 format=4 uid="uid://bjp2bqcf6w1vx"]
 
 [ext_resource type="PackedScene" uid="uid://bl5scdsfprknh" path="res://scenes/components/gameManagerComponent/GameManagerComponent.tscn" id="1_nlqox"]
 [ext_resource type="PackedScene" uid="uid://b13mjmpnlw106" path="res://scenes/player/Player.tscn" id="2_l1fh5"]
@@ -7,10 +7,13 @@
 [ext_resource type="PackedScene" uid="uid://bqyrv22n2ttl3" path="res://scenes/components/saveManagerComponent/SaveManagerComponent.tscn" id="3_x7bqd"]
 [ext_resource type="PackedScene" uid="uid://dljdort81vqu2" path="res://scenes/items/key/Key.tscn" id="6_xiqbk"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_yyfqx"]
+radius = 89.560036
+
 [node name="GreenWorld" type="Node"]
 
-[node name="GameManagerComponent" parent="." node_paths=PackedStringArray("saveManagerComponent") instance=ExtResource("1_nlqox")]
-saveManagerComponent = NodePath("../SaveManagerComponent")
+[node name="GameManagerComponent" parent="." node_paths=PackedStringArray("key") instance=ExtResource("1_nlqox")]
+key = NodePath("../Key")
 
 [node name="WorldTransitionComponent" parent="." node_paths=PackedStringArray("gameManagerComponent", "saveManagerComponent", "player") instance=ExtResource("3_ldmwi")]
 gameManagerComponent = NodePath("../GameManagerComponent")
@@ -29,5 +32,12 @@ position = Vector2(283, 141)
 safe_margin = 2.0
 
 [node name="Key" parent="." instance=ExtResource("6_xiqbk")]
-position = Vector2(645, 493)
-KeyType = 2
+position = Vector2(643, 493)
+KeyType = 1
+
+[node name="Area2D" type="Area2D" parent="Key"]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Key/Area2D"]
+shape = SubResource("CircleShape2D_yyfqx")

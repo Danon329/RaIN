@@ -5,6 +5,17 @@ namespace Game.Managers;
 [GlobalClass]
 public partial class GameManagerComponent : Node
 {
+	[Signal]
+	public delegate void StartWorldChangingEventHandler(int worldNr);
+
+	
+	[ExportCategory("Setup")]
+	[Export]
+	public Worlds World { get; private set; }
+	[Export]
+	private Items.Key key;
+
+
 	public enum Worlds
 	{
 		Green,
@@ -13,18 +24,10 @@ public partial class GameManagerComponent : Node
 		White
 	}
 
-
-	[Signal]
-	public delegate void StartWorldChangingEventHandler(int worldNr);
-
-	[Export]
-	private SaveManagerComponent saveManagerComponent;
-	[Export]
-	public Worlds World { get; private set; }
-
 	private Timer timer;
 
 	private int currentWorld = -1;
+	private bool keyCollected = false;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -33,9 +36,10 @@ public partial class GameManagerComponent : Node
 		GetNodes();
 		// Load SaveData for this World, if existing
 
+		ConnectSignals();
+
 		timer.Start(60);
 
-		timer.Timeout += OnTimerTimeout;
 	}
 
 	private void GetNodes()
@@ -43,9 +47,10 @@ public partial class GameManagerComponent : Node
 		timer = GetNode<Timer>("TransitionTimer");
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	private void ConnectSignals()
 	{
+		timer.Timeout += OnTimerTimeout;
+		key.KeyCollected += OnKeyCollected;
 	}
 
 	private int GetRandomWorld()
@@ -68,5 +73,14 @@ public partial class GameManagerComponent : Node
 		int newWorldNr = GetRandomWorld();
 		EmitSignal(SignalName.StartWorldChanging, newWorldNr);
 		GD.Print("Changing World");
+	}
+
+	private void OnKeyCollected(int keyTypeId)
+	{
+		keyCollected = true;
+		GD.Print("Key Collected");
+
+		SaveManagerComponent save = new SaveManagerComponent();
+		save.SaveKey(keyTypeId);
 	}
 }

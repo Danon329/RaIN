@@ -1,5 +1,8 @@
 using Godot;
 
+namespace Game.Items;
+
+[GlobalClass]
 public partial class Key : Sprite2D
 {
     [Signal]
@@ -34,9 +37,10 @@ public partial class Key : Sprite2D
     {
         if (@event.IsActionPressed("interact") && areaEntered)
         {
-            GD.Print("Input");
             // Send Signal (with int Keytype)
+            EmitSignal(SignalName.KeyCollected, (int)KeyType);
             // Remove Object
+            CallDeferred("queue_free");
         }
     }
 
