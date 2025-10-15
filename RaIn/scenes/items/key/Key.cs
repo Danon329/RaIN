@@ -1,9 +1,10 @@
 using Godot;
-using Game.Managers;
-using Game.Entity;
 
 public partial class Key : Sprite2D
 {
+    [Signal]
+    public delegate void KeyCollectedEventHandler(int keyTypeId);
+
     public enum KeyTypes
     {
         Green,
@@ -16,6 +17,7 @@ public partial class Key : Sprite2D
     public KeyTypes KeyType { get; private set; }
 
     private Area2D area2D;
+    private bool areaEntered = false;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -24,8 +26,18 @@ public partial class Key : Sprite2D
 
         area2D = GetNode<Area2D>("Area2D");
 
-        area2D.AreaEntered += OnPlayerEntered;
-        area2D.AreaExited += OnPlayerExited;
+        area2D.BodyEntered += OnPlayerEntered;
+        area2D.BodyExited += OnPlayerExited;
+    }
+
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        if (@event.IsActionPressed("interact") && areaEntered)
+        {
+            GD.Print("Input");
+            // Send Signal (with int Keytype)
+            // Remove Object
+        }
     }
 
     private void SetupTexture()
@@ -50,13 +62,13 @@ public partial class Key : Sprite2D
         }
     }
 
-    private void OnPlayerEntered(Area2D player)
+    private void OnPlayerEntered(Node2D player)
     {
-        // Listen for Input
+        areaEntered = true;
     }
 
-    private void OnPlayerExited(Area2D player)
+    private void OnPlayerExited(Node2D player)
     {
-        // Tween stuff maybe??
+        areaEntered = false;
     }
 }

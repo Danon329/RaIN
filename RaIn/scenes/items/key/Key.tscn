@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://sxmj0havmm36" path="res://assets/spritesheets/spritesheet-tiles-default.png" id="1_muk4o"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yyfqx"]
-radius = 30.0
+radius = 89.560036
 
 [node name="Key" type="Sprite2D"]
 texture = ExtResource("1_muk4o")
@@ -14,6 +14,8 @@ frame = 12
 script = ExtResource("1_aym7u")
 
 [node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_yyfqx")

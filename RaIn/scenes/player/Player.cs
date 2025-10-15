@@ -3,6 +3,7 @@ using Godot;
 
 namespace Game.Entity;
 
+[GlobalClass]
 public partial class Player : CharacterBody2D
 {
     [Export]
