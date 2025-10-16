@@ -1,26 +1,19 @@
-[gd_scene load_steps=8 format=4 uid="uid://bjp2bqcf6w1vx"]
+[gd_scene load_steps=6 format=4 uid="uid://bjp2bqcf6w1vx"]
 
 [ext_resource type="PackedScene" uid="uid://bl5scdsfprknh" path="res://scenes/components/gameManagerComponent/GameManagerComponent.tscn" id="1_nlqox"]
 [ext_resource type="PackedScene" uid="uid://b13mjmpnlw106" path="res://scenes/player/Player.tscn" id="2_l1fh5"]
 [ext_resource type="PackedScene" uid="uid://xdqr2y2kx5cm" path="res://scenes/components/worldTransitionComponent/WorldTransitionComponent.tscn" id="3_ldmwi"]
 [ext_resource type="TileSet" uid="uid://xsvcgxbbmx0f" path="res://resources/WorldTiles.tres" id="3_nlqox"]
-[ext_resource type="PackedScene" uid="uid://bqyrv22n2ttl3" path="res://scenes/components/saveManagerComponent/SaveManagerComponent.tscn" id="3_x7bqd"]
 [ext_resource type="PackedScene" uid="uid://dljdort81vqu2" path="res://scenes/items/key/Key.tscn" id="6_xiqbk"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_yyfqx"]
-radius = 89.560036
 
 [node name="GreenWorld" type="Node"]
 
 [node name="GameManagerComponent" parent="." node_paths=PackedStringArray("key") instance=ExtResource("1_nlqox")]
 key = NodePath("../Key")
 
-[node name="WorldTransitionComponent" parent="." node_paths=PackedStringArray("gameManagerComponent", "saveManagerComponent", "player") instance=ExtResource("3_ldmwi")]
+[node name="WorldTransitionComponent" parent="." node_paths=PackedStringArray("gameManagerComponent", "player") instance=ExtResource("3_ldmwi")]
 gameManagerComponent = NodePath("../GameManagerComponent")
-saveManagerComponent = NodePath("../SaveManagerComponent")
 player = NodePath("../Player")
-
-[node name="SaveManagerComponent" parent="." instance=ExtResource("3_x7bqd")]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 tile_map_data = PackedByteArray("AAAAAAAAAQAGAA0AAAAAAAEAAQAGAA0AAAAAAAIAAQAGAA0AAAAAAAMAAQAGAA0AAAAAAAQAAQAGAA0AAAAAAAUAAQAGAA0AAAAAAAYAAQAGAA0AAAAAAAcAAQAGAA0AAAAAAAgAAQAGAA0AAAAAAAkAAQAGAA0AAAABAAkAAQAGAA0AAAACAAkAAQAGAA0AAAADAAkAAQAGAA0AAAAEAAkAAQAGAA0AAAAFAAkAAQAGAA0AAAAGAAkAAQAGAA0AAAAHAAkAAQAGAA0AAAAIAAkAAQAGAA0AAAAJAAkAAQAGAA0AAAAKAAkAAQAGAA0AAAALAAkAAQAGAA0AAAAMAAkAAQAGAA0AAAANAAkAAQAGAA0AAAAOAAkAAQAGAA0AAAAPAAkAAQAGAA0AAAAQAAkAAQAGAA0AAAARAAkAAQAGAA0AAAASAAkAAQAGAA0AAAAUAAkAAQAGAA0AAAAVAAkAAQAGAA0AAAATAAkAAQAGAA0AAAAWAAkAAQAGAA0AAAAXAAkAAQAGAA0AAAAYAAkAAQAGAA0AAAA=")
@@ -32,12 +25,4 @@ position = Vector2(283, 141)
 safe_margin = 2.0
 
 [node name="Key" parent="." instance=ExtResource("6_xiqbk")]
-position = Vector2(643, 493)
-KeyType = 1
-
-[node name="Area2D" type="Area2D" parent="Key"]
-collision_layer = 4
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Key/Area2D"]
-shape = SubResource("CircleShape2D_yyfqx")
+position = Vector2(694, 437)

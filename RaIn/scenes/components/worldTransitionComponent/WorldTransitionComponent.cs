@@ -10,8 +10,6 @@ public partial class WorldTransitionComponent : Node
 	[Export]
 	private GameManagerComponent gameManagerComponent;
 	[Export]
-	private SaveManagerComponent saveManagerComponent;
-	[Export]
 	private Player player;
 
 	// Create Array of String with Paths to possible Worlds
