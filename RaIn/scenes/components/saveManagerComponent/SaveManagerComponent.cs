@@ -1,0 +1,61 @@
+using Godot;
+
+namespace Game.Managers;
+
+[GlobalClass]
+public partial class SaveManagerComponent : Node
+{
+    private string keySavePath = "user://KeyData.dat";
+
+    public SaveManagerComponent()
+    {
+
+    }
+
+    // Saving and Loading of Keys
+    public void SaveKey(int newKey, bool newWasUsed)
+    {
+        Godot.Collections.Dictionary<int, bool> keyIds = LoadKeys();
+        GD.Print("Loaded Existing Keys: " + keyIds.ToString());
+
+        foreach (var (key, wasUsed) in keyIds)
+        {
+            if (key == newKey && wasUsed != newWasUsed)
+            {
+                keyIds[key] = newWasUsed;
+            }
+            else if (key == newKey && wasUsed == newWasUsed)
+            {
+                GD.PrintErr("This Key already exists, with the same usage");
+                return;
+            }
+        }
+
+        keyIds[newKey] = newWasUsed;
+        GD.Print("Added new Key: " + keyIds.ToString());
+
+        using FileAccess saveFile = FileAccess.Open(keySavePath, FileAccess.ModeFlags.Write);
+        saveFile.StoreVar(keyIds);
+    }
+
+    public Godot.Collections.Dictionary<int, bool> LoadKeys()
+    {
+        Godot.Collections.Dictionary<int, bool> keyIds = new Godot.Collections.Dictionary<int, bool>();
+
+        if (FileAccess.FileExists(keySavePath))
+        {
+            using FileAccess loadFile = FileAccess.Open(keySavePath, FileAccess.ModeFlags.Read);
+            keyIds = (Godot.Collections.Dictionary<int, bool>)loadFile.GetVar();
+        }
+
+        return keyIds;
+    }
+
+    public void WipeKeySave()
+    {
+        using FileAccess saveFile = FileAccess.Open(keySavePath, FileAccess.ModeFlags.Write);
+        saveFile.StoreVar(new Godot.Collections.Dictionary());
+    }
+    // Saving and Loading of World data, depending on World
+    // Saving current World
+}

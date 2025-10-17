@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqyrv22n2ttl3"]
+
+[ext_resource type="Script" uid="uid://dfwg4sgytddvu" path="res://scenes/components/saveManagerComponent/SaveManagerComponent.cs" id="1_xjrtk"]
+
+[node name="SaveManagerComponent" type="Node"]
+script = ExtResource("1_xjrtk")
