@@ -66,13 +66,19 @@ public partial class Key : Sprite2D
         }
     }
 
-    private void OnPlayerEntered(Node2D player)
+    private void OnPlayerEntered(Node2D body)
     {
-        areaEntered = true;
+        if (body == GetTree().GetFirstNodeInGroup("player"))
+        {
+            areaEntered = true;
+        }
     }
 
-    private void OnPlayerExited(Node2D player)
+    private void OnPlayerExited(Node2D body)
     {
-        areaEntered = false;
+        if (body == GetTree().GetFirstNodeInGroup("player"))
+        {
+            areaEntered = false;
+        }
     }
 }

@@ -62,6 +62,7 @@ dash={
 2d_physics/layer_1="platforms"
 2d_physics/layer_2="player"
 2d_physics/layer_3="key"
+2d_physics/layer_4="lock"
 
 [rendering]
 

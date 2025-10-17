@@ -1,15 +1,17 @@
-[gd_scene load_steps=6 format=4 uid="uid://bjp2bqcf6w1vx"]
+[gd_scene load_steps=7 format=4 uid="uid://bjp2bqcf6w1vx"]
 
 [ext_resource type="PackedScene" uid="uid://bl5scdsfprknh" path="res://scenes/components/gameManagerComponent/GameManagerComponent.tscn" id="1_nlqox"]
 [ext_resource type="PackedScene" uid="uid://b13mjmpnlw106" path="res://scenes/player/Player.tscn" id="2_l1fh5"]
 [ext_resource type="PackedScene" uid="uid://xdqr2y2kx5cm" path="res://scenes/components/worldTransitionComponent/WorldTransitionComponent.tscn" id="3_ldmwi"]
 [ext_resource type="TileSet" uid="uid://xsvcgxbbmx0f" path="res://resources/WorldTiles.tres" id="3_nlqox"]
+[ext_resource type="PackedScene" uid="uid://c6twfcyrtqv6i" path="res://scenes/items/lock/Lock.tscn" id="6_evq88"]
 [ext_resource type="PackedScene" uid="uid://dljdort81vqu2" path="res://scenes/items/key/Key.tscn" id="6_xiqbk"]
 
 [node name="GreenWorld" type="Node"]
 
-[node name="GameManagerComponent" parent="." node_paths=PackedStringArray("key") instance=ExtResource("1_nlqox")]
+[node name="GameManagerComponent" parent="." node_paths=PackedStringArray("key", "lockItem") instance=ExtResource("1_nlqox")]
 key = NodePath("../Key")
+lockItem = NodePath("../Lock")
 
 [node name="WorldTransitionComponent" parent="." node_paths=PackedStringArray("gameManagerComponent", "player") instance=ExtResource("3_ldmwi")]
 gameManagerComponent = NodePath("../GameManagerComponent")
@@ -26,3 +28,8 @@ safe_margin = 2.0
 
 [node name="Key" parent="." instance=ExtResource("6_xiqbk")]
 position = Vector2(694, 437)
+KeyType = 3
+
+[node name="Lock" parent="." instance=ExtResource("6_evq88")]
+position = Vector2(1344, 512)
+LockType = 3
