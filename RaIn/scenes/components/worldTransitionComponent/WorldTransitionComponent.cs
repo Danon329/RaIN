@@ -7,32 +7,32 @@ namespace Game.Components;
 
 public partial class WorldTransitionComponent : Node
 {
-	[Export]
-	private GameManagerComponent gameManagerComponent;
-	[Export]
-	private Player player;
+    [Export]
+    private GameManagerComponent gameManagerComponent;
+    [Export]
+    private Player player;
 
-	// Create Array of String with Paths to possible Worlds
-	private Array<string> worldPaths = [
-		"res://scenes/worlds/GreenWorld.tscn",
-		"res://scenes/worlds/PurpleWorld.tscn",
-		"res://scenes/worlds/BlackWorld.tscn",
-		"res://scenes/worlds/WhiteWorld.tscn"
-	];
+    // Create Array of String with Paths to possible Worlds
+    private Array<string> worldPaths = [
+        "res://scenes/worlds/greenWorld/GreenWorld.tscn",
+        "res://scenes/worlds/purpleWorld/PurpleWorld.tscn",
+        "res://scenes/worlds/blackWorld/BlackWorld.tscn",
+        "res://scenes/worlds/whiteWorld/WhiteWorld.tscn"
+    ];
 
-	public override void _Ready()
-	{
-		gameManagerComponent.StartWorldChanging += OnWorldChangingSignal;
-	}
+    public override void _Ready()
+    {
+        gameManagerComponent.StartWorldChanging += OnWorldChangingSignal;
+    }
 
-	public override void _Process(double delta)
-	{
-	}
+    public override void _Process(double delta)
+    {
+    }
 
-	private void OnWorldChangingSignal(int worldNr)
-	{
-		// Save current world before loading next scene
-		PackedScene newWorldScene = GD.Load<PackedScene>(worldPaths[worldNr]);
-		GetTree().ChangeSceneToPacked(newWorldScene);
-	}
+    private void OnWorldChangingSignal(int worldNr)
+    {
+        // Save current world before loading next scene
+        PackedScene newWorldScene = GD.Load<PackedScene>(worldPaths[worldNr]);
+        GetTree().ChangeSceneToPacked(newWorldScene);
+    }
 }

@@ -1,4 +1,6 @@
 using Godot;
+using Game.Entity;
+using Game.Worlds;
 
 namespace Game.Managers;
 
@@ -25,6 +27,8 @@ public partial class GameManagerComponent : Node
     }
 
     private Timer timer;
+    private Player player;
+    private World currentWorld;
 
     private bool keyCollected = false;
     private bool lockOpened = false;
@@ -44,6 +48,7 @@ public partial class GameManagerComponent : Node
     private void GetNodes()
     {
         timer = GetNode<Timer>("TransitionTimer");
+        currentWorld = (World)GetParent();
     }
 
     private void ConnectSignals()
@@ -51,6 +56,34 @@ public partial class GameManagerComponent : Node
         timer.Timeout += OnTimerTimeout;
         key.KeyCollected += OnKeyCollected;
         lockItem.LockOpened += OnLockOpened;
+    }
+
+    private void loadGameFile()
+    {
+        SaveManagerComponent load = new SaveManagerComponent();
+        load.LoadWorld(currentWorld, (int)World);
+    }
+
+    // Getters and Setters
+
+    public bool IsKeyCollected()
+    {
+        return keyCollected;
+    }
+
+    public void SetKeyCollected(bool value)
+    {
+        keyCollected = value;
+    }
+
+    public bool IsLockOpened()
+    {
+        return lockOpened;
+    }
+
+    public void SetLockOpened(bool value)
+    {
+        lockOpened = value;
     }
 
     private int GetRandomWorld()
@@ -70,7 +103,7 @@ public partial class GameManagerComponent : Node
         SaveManagerComponent saveManager = new SaveManagerComponent();
         Godot.Collections.Dictionary<int, bool> keys = saveManager.LoadKeys();
 
-        if (MissFunc.DictionarySize((Godot.Collections.Dictionary)keys) == 4)
+        if (MissFunc.GetDictionarySize((Godot.Collections.Dictionary)keys) == 4)
         {
             foreach (var (key, wasUsed) in keys)
             {
@@ -101,7 +134,7 @@ public partial class GameManagerComponent : Node
 
         SaveManagerComponent save = new SaveManagerComponent();
         save.SaveKey(keyTypeId, false);
-        // General Save
+        save.SaveWorld(currentWorld, (int)World);
     }
 
     private void OnLockOpened()
@@ -110,10 +143,14 @@ public partial class GameManagerComponent : Node
         GD.Print("Lock opened");
 
         // General Save
+        SaveManagerComponent save = new SaveManagerComponent();
+        save.SaveWorld(currentWorld, (int)World);
+
         // Check for all locks opened
         if (CheckForGameFinished())
         {
             GD.Print("Game Finished");
         }
     }
+
 }

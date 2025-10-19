@@ -1,4 +1,5 @@
 using Godot;
+using Game.Worlds;
 
 namespace Game.Managers;
 
@@ -7,9 +8,15 @@ public partial class SaveManagerComponent : Node
 {
     private string keySavePath = "user://KeyData.dat";
 
+    private string[] worldPaths = {
+        "user://GreenWorld.dat",
+        "user://PurpleWorld.dat",
+        "user://BlackWorld.dat",
+        "user://WhiteWorld.dat"
+    };
+
     public SaveManagerComponent()
     {
-
     }
 
     // Saving and Loading of Keys
@@ -57,5 +64,29 @@ public partial class SaveManagerComponent : Node
         saveFile.StoreVar(new Godot.Collections.Dictionary());
     }
     // Saving and Loading of World data, depending on World
+
+    public void SaveWorld(World world, int worldID)
+    {
+        Godot.Collections.Dictionary<string, Variant> saveVars = world.Save();
+
+        using FileAccess saveFile = FileAccess.Open(worldPaths[worldID], FileAccess.ModeFlags.Write);
+        saveFile.StoreVar(saveVars);
+        GD.Print("Saved File: Success");
+    }
+
+    public void LoadWorld(World world, int worldID)
+    {
+        Godot.Collections.Dictionary<string, Variant> saveVars =
+            new Godot.Collections.Dictionary<string, Variant>();
+
+        if (FileAccess.FileExists(worldPaths[worldID]))
+        {
+            using FileAccess loadFile = FileAccess.Open(worldPaths[worldID], FileAccess.ModeFlags.Read);
+            saveVars = (Godot.Collections.Dictionary<string, Variant>)loadFile.GetVar();
+            GD.Print("Loaded Dict into Memory");
+        }
+
+        world.Load(saveVars);
+    }
     // Saving current World
 }
