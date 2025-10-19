@@ -38,6 +38,7 @@ public partial class GameManagerComponent : Node
     {
         GetNodes();
         // Load SaveData for this World, if existing
+        loadGameFile();
 
         ConnectSignals();
 
@@ -130,7 +131,6 @@ public partial class GameManagerComponent : Node
     private void OnKeyCollected(int keyTypeId)
     {
         keyCollected = true;
-        GD.Print("Key Collected");
 
         SaveManagerComponent save = new SaveManagerComponent();
         save.SaveKey(keyTypeId, false);
@@ -140,7 +140,6 @@ public partial class GameManagerComponent : Node
     private void OnLockOpened()
     {
         lockOpened = true;
-        GD.Print("Lock opened");
 
         // General Save
         SaveManagerComponent save = new SaveManagerComponent();

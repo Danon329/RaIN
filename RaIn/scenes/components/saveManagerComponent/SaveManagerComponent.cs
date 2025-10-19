@@ -23,7 +23,6 @@ public partial class SaveManagerComponent : Node
     public void SaveKey(int newKey, bool newWasUsed)
     {
         Godot.Collections.Dictionary<int, bool> keyIds = LoadKeys();
-        GD.Print("Loaded Existing Keys: " + keyIds.ToString());
 
         foreach (var (key, wasUsed) in keyIds)
         {
@@ -39,7 +38,6 @@ public partial class SaveManagerComponent : Node
         }
 
         keyIds[newKey] = newWasUsed;
-        GD.Print("Added new Key: " + keyIds.ToString());
 
         using FileAccess saveFile = FileAccess.Open(keySavePath, FileAccess.ModeFlags.Write);
         saveFile.StoreVar(keyIds);
@@ -67,7 +65,8 @@ public partial class SaveManagerComponent : Node
 
     public void SaveWorld(World world, int worldID)
     {
-        Godot.Collections.Dictionary<string, Variant> saveVars = world.Save();
+        Godot.Collections.Dictionary<int, Variant> saveVars = world.Save();
+        GD.Print("Loaded Save Dictionary: " + saveVars.ToString());
 
         using FileAccess saveFile = FileAccess.Open(worldPaths[worldID], FileAccess.ModeFlags.Write);
         saveFile.StoreVar(saveVars);
@@ -76,17 +75,19 @@ public partial class SaveManagerComponent : Node
 
     public void LoadWorld(World world, int worldID)
     {
-        Godot.Collections.Dictionary<string, Variant> saveVars =
-            new Godot.Collections.Dictionary<string, Variant>();
+        Godot.Collections.Dictionary<int, Variant> saveVars =
+            new Godot.Collections.Dictionary<int, Variant>();
+        GD.Print("Loaded new Dictionary");
 
         if (FileAccess.FileExists(worldPaths[worldID]))
         {
             using FileAccess loadFile = FileAccess.Open(worldPaths[worldID], FileAccess.ModeFlags.Read);
-            saveVars = (Godot.Collections.Dictionary<string, Variant>)loadFile.GetVar();
+            saveVars = (Godot.Collections.Dictionary<int, Variant>)loadFile.GetVar();
             GD.Print("Loaded Dict into Memory");
         }
 
         world.Load(saveVars);
+        GD.Print("Called Load");
     }
     // Saving current World
 }
