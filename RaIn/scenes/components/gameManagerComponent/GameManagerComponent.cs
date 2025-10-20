@@ -1,4 +1,6 @@
 using Godot;
+using Game.Entity;
+using Game.Worlds;
 
 namespace Game.Managers;
 
@@ -25,6 +27,8 @@ public partial class GameManagerComponent : Node
     }
 
     private Timer timer;
+    private Player player;
+    private World currentWorld;
 
     private bool keyCollected = false;
     private bool lockOpened = false;
@@ -33,7 +37,11 @@ public partial class GameManagerComponent : Node
     public override void _Ready()
     {
         GetNodes();
-        // Load SaveData for this World, if existing
+
+        loadGameFile();
+        saveCurrentWorld();
+
+        CheckItems();
 
         ConnectSignals();
 
@@ -41,9 +49,12 @@ public partial class GameManagerComponent : Node
 
     }
 
+    // _Ready Methods
+
     private void GetNodes()
     {
         timer = GetNode<Timer>("TransitionTimer");
+        currentWorld = (World)GetParent();
     }
 
     private void ConnectSignals()
@@ -52,6 +63,54 @@ public partial class GameManagerComponent : Node
         key.KeyCollected += OnKeyCollected;
         lockItem.LockOpened += OnLockOpened;
     }
+
+    private void loadGameFile()
+    {
+        SaveManagerComponent load = new SaveManagerComponent();
+        load.LoadWorld(currentWorld, (int)World);
+    }
+
+    private void saveCurrentWorld()
+    {
+        SaveManagerComponent save = new SaveManagerComponent();
+        save.SaveLastWorld((int)World);
+    }
+
+    private void CheckItems()
+    {
+        if (keyCollected)
+        {
+            key.CallDeferred("queue_free");
+        }
+
+        if (lockOpened)
+        {
+            lockItem.CallDeferred("queue_free");
+        }
+    }
+    // Getters and Setters
+
+    public bool IsKeyCollected()
+    {
+        return keyCollected;
+    }
+
+    public void SetKeyCollected(bool value)
+    {
+        keyCollected = value;
+    }
+
+    public bool IsLockOpened()
+    {
+        return lockOpened;
+    }
+
+    public void SetLockOpened(bool value)
+    {
+        lockOpened = value;
+    }
+
+    // General Methods
 
     private int GetRandomWorld()
     {
@@ -70,7 +129,7 @@ public partial class GameManagerComponent : Node
         SaveManagerComponent saveManager = new SaveManagerComponent();
         Godot.Collections.Dictionary<int, bool> keys = saveManager.LoadKeys();
 
-        if (MissFunc.DictionarySize((Godot.Collections.Dictionary)keys) == 4)
+        if (MissFunc.GetDictionarySize((Godot.Collections.Dictionary)keys) == 4)
         {
             foreach (var (key, wasUsed) in keys)
             {
@@ -88,6 +147,8 @@ public partial class GameManagerComponent : Node
 
     private void OnTimerTimeout()
     {
+        SaveManagerComponent save = new SaveManagerComponent();
+        save.SaveWorld(currentWorld, (int)World);
         // Signal to World to start World changing sequence
         int newWorldNr = GetRandomWorld();
         EmitSignal(SignalName.StartWorldChanging, newWorldNr);
@@ -97,23 +158,25 @@ public partial class GameManagerComponent : Node
     private void OnKeyCollected(int keyTypeId)
     {
         keyCollected = true;
-        GD.Print("Key Collected");
 
         SaveManagerComponent save = new SaveManagerComponent();
         save.SaveKey(keyTypeId, false);
-        // General Save
+        save.SaveWorld(currentWorld, (int)World);
     }
 
     private void OnLockOpened()
     {
         lockOpened = true;
-        GD.Print("Lock opened");
 
         // General Save
+        SaveManagerComponent save = new SaveManagerComponent();
+        save.SaveWorld(currentWorld, (int)World);
+
         // Check for all locks opened
         if (CheckForGameFinished())
         {
             GD.Print("Game Finished");
         }
     }
+
 }

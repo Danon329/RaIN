@@ -120,7 +120,8 @@ public partial class Player : CharacterBody2D
 
     private void Walk()
     {
-        if (dashing) {
+        if (dashing)
+        {
             return;
         }
 
@@ -164,8 +165,10 @@ public partial class Player : CharacterBody2D
         }
     }
 
-    private void Dash() {
-        if (Input.IsActionJustPressed("dash")) {
+    private void Dash()
+    {
+        if (Input.IsActionJustPressed("dash"))
+        {
             int dir = sprite.FlipH ? -1 : 1;
             Velocity = new Vector2(speed * 4 * dir, 0);
 

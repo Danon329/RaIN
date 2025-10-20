@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gfjak"]
 size = Vector2(80, 100)
 
-[node name="Player" type="CharacterBody2D" groups=["player"]]
+[node name="Player" type="CharacterBody2D" groups=["persist", "player"]]
 collision_layer = 2
 script = ExtResource("1_gfjak")
 

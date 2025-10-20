@@ -1,4 +1,5 @@
 using Godot;
+using Game.Worlds;
 
 namespace Game.Managers;
 
@@ -6,17 +7,23 @@ namespace Game.Managers;
 public partial class SaveManagerComponent : Node
 {
     private string keySavePath = "user://KeyData.dat";
+    private string lastWorldSavePath = "user://LastWorld.dat";
+
+    private string[] worldSavePaths = {
+        "user://GreenWorld.dat",
+        "user://PurpleWorld.dat",
+        "user://BlackWorld.dat",
+        "user://WhiteWorld.dat"
+    };
 
     public SaveManagerComponent()
     {
-
     }
 
     // Saving and Loading of Keys
     public void SaveKey(int newKey, bool newWasUsed)
     {
         Godot.Collections.Dictionary<int, bool> keyIds = LoadKeys();
-        GD.Print("Loaded Existing Keys: " + keyIds.ToString());
 
         foreach (var (key, wasUsed) in keyIds)
         {
@@ -32,7 +39,6 @@ public partial class SaveManagerComponent : Node
         }
 
         keyIds[newKey] = newWasUsed;
-        GD.Print("Added new Key: " + keyIds.ToString());
 
         using FileAccess saveFile = FileAccess.Open(keySavePath, FileAccess.ModeFlags.Write);
         saveFile.StoreVar(keyIds);
@@ -57,5 +63,46 @@ public partial class SaveManagerComponent : Node
         saveFile.StoreVar(new Godot.Collections.Dictionary());
     }
     // Saving and Loading of World data, depending on World
+
+    public void SaveWorld(World world, int worldID)
+    {
+        Godot.Collections.Dictionary<int, Variant> saveVars = world.Save();
+
+        using FileAccess saveFile = FileAccess.Open(worldSavePaths[worldID], FileAccess.ModeFlags.Write);
+        saveFile.StoreVar(saveVars);
+    }
+
+    public void LoadWorld(World world, int worldID)
+    {
+        Godot.Collections.Dictionary<int, Variant> saveVars =
+            new Godot.Collections.Dictionary<int, Variant>();
+
+        if (FileAccess.FileExists(worldSavePaths[worldID]))
+        {
+            using FileAccess loadFile = FileAccess.Open(worldSavePaths[worldID], FileAccess.ModeFlags.Read);
+            saveVars = (Godot.Collections.Dictionary<int, Variant>)loadFile.GetVar();
+        }
+
+        world.Load(saveVars);
+    }
     // Saving current World
+
+    public void SaveLastWorld(int worldID)
+    {
+        using FileAccess saveFile = FileAccess.Open(lastWorldSavePath, FileAccess.ModeFlags.Write);
+        saveFile.StoreVar(worldID);
+    }
+
+    public int LoadLastWorld()
+    {
+        int worldID = -1;
+
+        if (FileAccess.FileExists(lastWorldSavePath))
+        {
+            using FileAccess loadFile = FileAccess.Open(lastWorldSavePath, FileAccess.ModeFlags.Read);
+            worldID = (int)loadFile.GetVar();
+        }
+
+        return worldID;
+    }
 }
