@@ -37,14 +37,19 @@ public partial class GameManagerComponent : Node
     public override void _Ready()
     {
         GetNodes();
-        // Load SaveData for this World, if existing
+
         loadGameFile();
+        saveCurrentWorld();
+
+        CheckItems();
 
         ConnectSignals();
 
         timer.Start(60);
 
     }
+
+    // _Ready Methods
 
     private void GetNodes()
     {
@@ -65,6 +70,24 @@ public partial class GameManagerComponent : Node
         load.LoadWorld(currentWorld, (int)World);
     }
 
+    private void saveCurrentWorld()
+    {
+        SaveManagerComponent save = new SaveManagerComponent();
+        save.SaveLastWorld((int)World);
+    }
+
+    private void CheckItems()
+    {
+        if (keyCollected)
+        {
+            key.CallDeferred("queue_free");
+        }
+
+        if (lockOpened)
+        {
+            lockItem.CallDeferred("queue_free");
+        }
+    }
     // Getters and Setters
 
     public bool IsKeyCollected()
@@ -86,6 +109,8 @@ public partial class GameManagerComponent : Node
     {
         lockOpened = value;
     }
+
+    // General Methods
 
     private int GetRandomWorld()
     {

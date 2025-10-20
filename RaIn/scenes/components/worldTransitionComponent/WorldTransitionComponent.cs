@@ -1,7 +1,6 @@
 using Game.Entity;
 using Game.Managers;
 using Godot;
-using Godot.Collections;
 
 namespace Game.Components;
 
@@ -13,12 +12,6 @@ public partial class WorldTransitionComponent : Node
     private Player player;
 
     // Create Array of String with Paths to possible Worlds
-    private Array<string> worldPaths = [
-        "res://scenes/worlds/greenWorld/GreenWorld.tscn",
-        "res://scenes/worlds/purpleWorld/PurpleWorld.tscn",
-        "res://scenes/worlds/blackWorld/BlackWorld.tscn",
-        "res://scenes/worlds/whiteWorld/WhiteWorld.tscn"
-    ];
 
     public override void _Ready()
     {
@@ -29,10 +22,10 @@ public partial class WorldTransitionComponent : Node
     {
     }
 
-    private void OnWorldChangingSignal(int worldNr)
+    private void OnWorldChangingSignal(int worldID)
     {
         // Save current world before loading next scene
-        PackedScene newWorldScene = GD.Load<PackedScene>(worldPaths[worldNr]);
+        PackedScene newWorldScene = GD.Load<PackedScene>(Paths.GetWorldPath(worldID));
         GetTree().ChangeSceneToPacked(newWorldScene);
     }
 }

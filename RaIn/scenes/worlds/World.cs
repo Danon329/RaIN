@@ -1,3 +1,7 @@
+// 0 = bool Key Collected
+// 1 = bool Lock Opened
+// 2 = Vector2 Globalposition of Player
+
 using Godot;
 using Game.Entity;
 using Game.Managers;
@@ -22,7 +26,6 @@ public partial class World : Node
             saves[0] = gameManager.IsKeyCollected();
             saves[1] = gameManager.IsLockOpened();
             saves[2] = player.GlobalPosition;
-            GD.Print("Loaded Data into Save Dict: " + saves.ToString());
         }
 
         return saves;
@@ -31,7 +34,6 @@ public partial class World : Node
 
     public virtual void Load(Godot.Collections.Dictionary<int, Variant> dict)
     {
-        GD.Print("In Load function");
         if (!MissFunc.IsDictEmpty((Godot.Collections.Dictionary)dict))
         {
             if (player != null && gameManager != null)
@@ -39,7 +41,6 @@ public partial class World : Node
                 gameManager.SetKeyCollected((bool)dict[0]);
                 gameManager.SetLockOpened((bool)dict[1]);
                 player.GlobalPosition = (Vector2)dict[2];
-                GD.Print("Applied Load");
             }
         }
     }

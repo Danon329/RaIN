@@ -7,8 +7,9 @@ namespace Game.Managers;
 public partial class SaveManagerComponent : Node
 {
     private string keySavePath = "user://KeyData.dat";
+    private string lastWorldSavePath = "user://LastWorld.dat";
 
-    private string[] worldPaths = {
+    private string[] worldSavePaths = {
         "user://GreenWorld.dat",
         "user://PurpleWorld.dat",
         "user://BlackWorld.dat",
@@ -66,28 +67,42 @@ public partial class SaveManagerComponent : Node
     public void SaveWorld(World world, int worldID)
     {
         Godot.Collections.Dictionary<int, Variant> saveVars = world.Save();
-        GD.Print("Loaded Save Dictionary: " + saveVars.ToString());
 
-        using FileAccess saveFile = FileAccess.Open(worldPaths[worldID], FileAccess.ModeFlags.Write);
+        using FileAccess saveFile = FileAccess.Open(worldSavePaths[worldID], FileAccess.ModeFlags.Write);
         saveFile.StoreVar(saveVars);
-        GD.Print("Saved File: Success");
     }
 
     public void LoadWorld(World world, int worldID)
     {
         Godot.Collections.Dictionary<int, Variant> saveVars =
             new Godot.Collections.Dictionary<int, Variant>();
-        GD.Print("Loaded new Dictionary");
 
-        if (FileAccess.FileExists(worldPaths[worldID]))
+        if (FileAccess.FileExists(worldSavePaths[worldID]))
         {
-            using FileAccess loadFile = FileAccess.Open(worldPaths[worldID], FileAccess.ModeFlags.Read);
+            using FileAccess loadFile = FileAccess.Open(worldSavePaths[worldID], FileAccess.ModeFlags.Read);
             saveVars = (Godot.Collections.Dictionary<int, Variant>)loadFile.GetVar();
-            GD.Print("Loaded Dict into Memory");
         }
 
         world.Load(saveVars);
-        GD.Print("Called Load");
     }
     // Saving current World
+
+    public void SaveLastWorld(int worldID)
+    {
+        using FileAccess saveFile = FileAccess.Open(lastWorldSavePath, FileAccess.ModeFlags.Write);
+        saveFile.StoreVar(worldID);
+    }
+
+    public int LoadLastWorld()
+    {
+        int worldID = -1;
+
+        if (FileAccess.FileExists(lastWorldSavePath))
+        {
+            using FileAccess loadFile = FileAccess.Open(lastWorldSavePath, FileAccess.ModeFlags.Read);
+            worldID = (int)loadFile.GetVar();
+        }
+
+        return worldID;
+    }
 }
