@@ -147,6 +147,8 @@ public partial class GameManagerComponent : Node
 
     private void OnTimerTimeout()
     {
+        SaveManagerComponent save = new SaveManagerComponent();
+        save.SaveWorld(currentWorld, (int)World);
         // Signal to World to start World changing sequence
         int newWorldNr = GetRandomWorld();
         EmitSignal(SignalName.StartWorldChanging, newWorldNr);
