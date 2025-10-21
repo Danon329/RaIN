@@ -24,7 +24,6 @@ public partial class WorldTransitionComponent : Node
 
     private void OnWorldChangingSignal(int worldID)
     {
-        // Save current world before loading next scene
         PackedScene newWorldScene = GD.Load<PackedScene>(Paths.GetWorldPath(worldID));
         GetTree().ChangeSceneToPacked(newWorldScene);
     }

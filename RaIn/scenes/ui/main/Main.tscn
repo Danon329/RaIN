@@ -1,0 +1,70 @@
+[gd_scene load_steps=3 format=3 uid="uid://cxwde6dij5kqq"]
+
+[ext_resource type="Script" uid="uid://85wutrg6j5bt" path="res://scenes/ui/main/Main.cs" id="1_mb6ya"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_iqid8"]
+font_size = 180
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mb6ya")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxLef t" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxCenter" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TitleMC" type="MarginContainer" parent="HBoxContainer/VBoxCenter"]
+layout_mode = 2
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_bottom = 80
+
+[node name="Title" type="Label" parent="HBoxContainer/VBoxCenter/TitleMC"]
+layout_mode = 2
+text = "RaIN"
+label_settings = SubResource("LabelSettings_iqid8")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ContinueMC" type="MarginContainer" parent="HBoxContainer/VBoxCenter"]
+layout_mode = 2
+
+[node name="NewWorldMC" type="MarginContainer" parent="HBoxContainer/VBoxCenter"]
+layout_mode = 2
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="NewWorldButton" type="Button" parent="HBoxContainer/VBoxCenter/NewWorldMC"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "New World"
+
+[node name="SettingsMC" type="MarginContainer" parent="HBoxContainer/VBoxCenter"]
+layout_mode = 2
+theme_override_constants/margin_top = 16
+
+[node name="SettingsButton" type="Button" parent="HBoxContainer/VBoxCenter/SettingsMC"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Settings
+"
+
+[node name="VBoxRight" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
