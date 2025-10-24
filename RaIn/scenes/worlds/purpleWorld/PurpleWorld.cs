@@ -2,8 +2,7 @@ using Godot;
 
 namespace Game.Worlds;
 
-[GlobalClass]
-public partial class GreenWorld : World
+public partial class PurpleWorld : World
 {
     public override Godot.Collections.Dictionary<int, Variant> Save()
     {
@@ -15,3 +14,4 @@ public partial class GreenWorld : World
         base.Load(dict);
     }
 }
+
