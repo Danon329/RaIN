@@ -1,0 +1,62 @@
+[gd_scene load_steps=4 format=3 uid="uid://cirqi568owryg"]
+
+[ext_resource type="Script" uid="uid://b6fjwkd678owm" path="res://scenes/ui/settings/Settings.cs" id="1_wcv47"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_wcv47"]
+font_size = 36
+
+[sub_resource type="Theme" id="Theme_wcv47"]
+default_font_size = 36
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wcv47")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+current_tab = 0
+
+[node name="Video" type="MarginContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Video/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Window Size"
+label_settings = SubResource("LabelSettings_wcv47")
+
+[node name="WindowSizeButton" type="OptionButton" parent="MarginContainer/VBoxContainer/TabContainer/Video/HBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_wcv47")
+selected = 0
+item_count = 2
+popup/item_0/text = "Windowed"
+popup/item_0/id = 0
+popup/item_1/text = "Fullscreen"
+popup/item_1/id = 1
+
+[node name="Music" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1

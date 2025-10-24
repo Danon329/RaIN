@@ -1,6 +1,8 @@
 using Godot;
 using Game.Managers;
 
+namespace Game.UI;
+
 public partial class Main : Control
 {
     private Button newWorldButton;
@@ -72,7 +74,6 @@ public partial class Main : Control
 
     private void OnNewWorldButtonPressed()
     {
-        // TODO: Create new World (Overwrite old saves)
         saveManager.WipeKeySave();
         saveManager.WipeWorlds();
 
@@ -83,6 +84,8 @@ public partial class Main : Control
     private void OnSettingsButtonPressed()
     {
         // TODO: Create Settings Scene
+        PackedScene settingsScene = GD.Load<PackedScene>(Paths.GetSettingsPath());
+        GetTree().ChangeSceneToPacked(settingsScene);
     }
 
     private void OnContinueButtonPressed()

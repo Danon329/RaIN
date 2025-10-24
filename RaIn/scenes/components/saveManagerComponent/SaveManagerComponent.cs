@@ -59,8 +59,11 @@ public partial class SaveManagerComponent : Node
 
     public void WipeKeySave()
     {
-        using FileAccess saveFile = FileAccess.Open(keySavePath, FileAccess.ModeFlags.Write);
-        saveFile.StoreVar(new Godot.Collections.Dictionary());
+        if (FileAccess.FileExists(keySavePath))
+        {
+            using FileAccess saveFile = FileAccess.Open(keySavePath, FileAccess.ModeFlags.Write);
+            saveFile.StoreVar(new Godot.Collections.Dictionary());
+        }
     }
 
     // Save World
@@ -92,8 +95,11 @@ public partial class SaveManagerComponent : Node
 
         foreach (string worldSavePath in worldSavePaths)
         {
-            using FileAccess saveFile = FileAccess.Open(worldSavePath, FileAccess.ModeFlags.Write);
-            saveFile.StoreVar(emptyDict);
+            if (FileAccess.FileExists(worldSavePath))
+            {
+                using FileAccess saveFile = FileAccess.Open(worldSavePath, FileAccess.ModeFlags.Write);
+                saveFile.StoreVar(emptyDict);
+            }
         }
     }
 
