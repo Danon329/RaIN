@@ -19,8 +19,9 @@ public partial class Main : Control
         GetNodes();
         CreateContinueButton();
 
-        ConnectToSignals();
+        LoadSettings();
 
+        ConnectToSignals();
     }
 
     private void GetNodes()
@@ -43,6 +44,12 @@ public partial class Main : Control
         {
             continueWorldButton.Pressed += OnContinueButtonPressed;
         }
+    }
+
+    private void LoadSettings()
+    {
+        Settings settings = new Settings();
+        settings.CheckForLoad();
     }
 
     private bool CheckForExistingWorld()
