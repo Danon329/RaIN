@@ -1,0 +1,115 @@
+[gd_scene load_steps=11 format=3 uid="uid://cirqi568owryg"]
+
+[ext_resource type="Script" uid="uid://b6fjwkd678owm" path="res://scenes/ui/settings/Settings.cs" id="1_wcv47"]
+[ext_resource type="Texture2D" uid="uid://ddwxqhb08ogy1" path="res://resources/uiResources/CheckButtonSizeUnchecked.tres" id="2_7oi5m"]
+[ext_resource type="Texture2D" uid="uid://g3wf28shvj2h" path="res://resources/uiResources/CheckButtonSizeChecked.tres" id="2_wyiwp"]
+[ext_resource type="Texture2D" uid="uid://b65xmpuf3bqsr" path="res://resources/uiResources/HSliderGraber.tres" id="4_avf5j"]
+[ext_resource type="Texture2D" uid="uid://ddody13lqrrq6" path="res://resources/uiResources/HSliderGraberHighlighted.tres" id="5_r5qds"]
+[ext_resource type="Texture2D" uid="uid://c00ly8jrwybqy" path="res://resources/uiResources/HSliderTick.tres" id="6_qon2a"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_wcv47"]
+font_size = 36
+
+[sub_resource type="Theme" id="Theme_wcv47"]
+default_font_size = 36
+
+[sub_resource type="Theme" id="Theme_7oi5m"]
+default_font_size = 36
+
+[sub_resource type="Theme" id="Theme_oiyk6"]
+default_font_size = 36
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wcv47")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+current_tab = 0
+
+[node name="Video" type="MarginContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/Video/VBoxContainer"]
+layout_mode = 2
+
+[node name="ResolutionsLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Video/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Resolutions"
+label_settings = SubResource("LabelSettings_wcv47")
+
+[node name="ResolutionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/TabContainer/Video/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_wcv47")
+item_count = 4
+popup/item_0/text = "1280x720"
+popup/item_0/id = 0
+popup/item_1/text = "1920x1080"
+popup/item_1/id = 1
+popup/item_2/text = "2560x1440"
+popup/item_2/id = 2
+popup/item_3/text = "3840x2160"
+popup/item_3/id = 3
+
+[node name="FullscreenCheckButton" type="CheckButton" parent="MarginContainer/VBoxContainer/TabContainer/Video/VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_7oi5m")
+theme_override_icons/checked = ExtResource("2_wyiwp")
+theme_override_icons/unchecked = ExtResource("2_7oi5m")
+text = "Fullscreen"
+
+[node name="Music" type="MarginContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/Music"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/Music/VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_oiyk6")
+
+[node name="GeneralSoundLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Music/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "General Sound"
+
+[node name="GeneralSoundSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TabContainer/Music/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_icons/grabber = ExtResource("4_avf5j")
+theme_override_icons/grabber_highlight = ExtResource("5_r5qds")
+theme_override_icons/tick = ExtResource("6_qon2a")
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ReturnButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 36
+text = "Return"

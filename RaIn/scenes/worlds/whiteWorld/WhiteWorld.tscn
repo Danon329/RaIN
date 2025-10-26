@@ -1,14 +1,17 @@
-[gd_scene load_steps=5 format=4 uid="uid://b4xjgjc1bpru2"]
+[gd_scene load_steps=6 format=4 uid="uid://b4xjgjc1bpru2"]
 
+[ext_resource type="Script" uid="uid://c5lxth3704i48" path="res://scenes/worlds/whiteWorld/WhiteWorld.cs" id="1_i4a7q"]
 [ext_resource type="PackedScene" uid="uid://bl5scdsfprknh" path="res://scenes/components/gameManagerComponent/GameManagerComponent.tscn" id="1_t8xlc"]
 [ext_resource type="PackedScene" uid="uid://xdqr2y2kx5cm" path="res://scenes/components/worldTransitionComponent/WorldTransitionComponent.tscn" id="2_ws8mx"]
 [ext_resource type="TileSet" uid="uid://xsvcgxbbmx0f" path="res://resources/WorldTiles.tres" id="3_nbuho"]
 [ext_resource type="PackedScene" uid="uid://b13mjmpnlw106" path="res://scenes/player/Player.tscn" id="4_86388"]
 
-[node name="WhiteWorld" type="Node"]
+[node name="WhiteWorld" type="Node" node_paths=PackedStringArray("gameManager", "player")]
+script = ExtResource("1_i4a7q")
+gameManager = NodePath("GameManagerComponent")
+player = NodePath("Player")
 
 [node name="GameManagerComponent" parent="." instance=ExtResource("1_t8xlc")]
-world = 3
 
 [node name="WorldTransitionComponent" parent="." node_paths=PackedStringArray("gameManagerComponent", "player") instance=ExtResource("2_ws8mx")]
 gameManagerComponent = NodePath("../GameManagerComponent")

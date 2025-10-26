@@ -59,11 +59,14 @@ public partial class SaveManagerComponent : Node
 
     public void WipeKeySave()
     {
-        using FileAccess saveFile = FileAccess.Open(keySavePath, FileAccess.ModeFlags.Write);
-        saveFile.StoreVar(new Godot.Collections.Dictionary());
+        if (FileAccess.FileExists(keySavePath))
+        {
+            using FileAccess saveFile = FileAccess.Open(keySavePath, FileAccess.ModeFlags.Write);
+            saveFile.StoreVar(new Godot.Collections.Dictionary());
+        }
     }
-    // Saving and Loading of World data, depending on World
 
+    // Save World
     public void SaveWorld(World world, int worldID)
     {
         Godot.Collections.Dictionary<int, Variant> saveVars = world.Save();
@@ -85,8 +88,22 @@ public partial class SaveManagerComponent : Node
 
         world.Load(saveVars);
     }
-    // Saving current World
 
+    public void WipeWorlds()
+    {
+        Godot.Collections.Dictionary<int, Variant> emptyDict = new Godot.Collections.Dictionary<int, Variant>();
+
+        foreach (string worldSavePath in worldSavePaths)
+        {
+            if (FileAccess.FileExists(worldSavePath))
+            {
+                using FileAccess saveFile = FileAccess.Open(worldSavePath, FileAccess.ModeFlags.Write);
+                saveFile.StoreVar(emptyDict);
+            }
+        }
+    }
+
+    // Saving current World
     public void SaveLastWorld(int worldID)
     {
         using FileAccess saveFile = FileAccess.Open(lastWorldSavePath, FileAccess.ModeFlags.Write);

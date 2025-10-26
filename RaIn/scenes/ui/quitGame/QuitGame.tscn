@@ -1,0 +1,72 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwgdk08u7smfa"]
+
+[ext_resource type="Script" uid="uid://c500dl2eugus2" path="res://scenes/ui/quitGame/QuitGame.cs" id="1_odc7n"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_h76r6"]
+font_size = 128
+
+[node name="QuitGame" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_odc7n")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Placeholder2" type="Control" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TitleMC" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 200
+theme_override_constants/margin_bottom = 100
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/TitleMC"]
+layout_mode = 2
+text = "Do you want to Quit?"
+label_settings = SubResource("LabelSettings_h76r6")
+
+[node name="YesMC" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 300
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 300
+theme_override_constants/margin_bottom = 32
+
+[node name="YesButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/YesMC"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 84
+text = "Yes"
+
+[node name="NoMC" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 300
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 300
+theme_override_constants/margin_bottom = 64
+
+[node name="NoButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/NoMC"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 84
+text = "No"
+
+[node name="Placeholder" type="Control" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3

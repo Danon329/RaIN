@@ -1,0 +1,108 @@
+using Godot;
+using Game.Managers;
+
+namespace Game.UI;
+
+public partial class Main : Control
+{
+    private Button newWorldButton;
+    private Button continueWorldButton;
+    private Button settingsButton;
+    private Button quitGameButton;
+
+    private MarginContainer continueMC;
+
+    private SaveManagerComponent saveManager = new SaveManagerComponent();
+
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
+    {
+        GetNodes();
+        CreateContinueButton();
+
+        LoadSettings();
+
+        ConnectToSignals();
+    }
+
+    private void GetNodes()
+    {
+        newWorldButton = GetNode<Button>("HBoxContainer/VBoxCenter/NewWorldMC/NewWorldButton");
+        settingsButton = GetNode<Button>("HBoxContainer/VBoxCenter/SettingsMC/SettingsButton");
+        quitGameButton = GetNode<Button>("HBoxContainer/VBoxCenter/QuitGameMC/QuitButton");
+
+        continueMC = GetNode<MarginContainer>("HBoxContainer/VBoxCenter/ContinueMC");
+    }
+
+    private void ConnectToSignals()
+    {
+        if (newWorldButton != null) newWorldButton.Pressed += OnNewWorldButtonPressed;
+        if (settingsButton != null) settingsButton.Pressed += OnSettingsButtonPressed;
+        if (quitGameButton != null) quitGameButton.Pressed += OnQuitGameButtonPressed;
+
+        if (continueWorldButton != null) continueWorldButton.Pressed += OnContinueButtonPressed;
+    }
+
+    private void LoadSettings()
+    {
+        if (Settings.Instance == null)
+        {
+            Settings settings = new Settings();
+            Settings.Instance.CallThreadSafe("CheckForLoad");
+        }
+    }
+
+    private bool CheckForExistingWorld()
+    {
+        if (saveManager.LoadLastWorld() == -1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private void CreateContinueButton()
+    {
+        if (!CheckForExistingWorld()) return;
+
+        // Creating Button
+        continueWorldButton = new Button();
+        continueMC.AddChild(continueWorldButton);
+
+        // Button Setup
+        continueWorldButton.Text = "Continue Game";
+        continueWorldButton.AddThemeFontSizeOverride("font_size", 64);
+        continueMC.AddThemeConstantOverride("margin_top", 16);
+        continueMC.AddThemeConstantOverride("margin_bottom", 16);
+    }
+
+    private void OnNewWorldButtonPressed()
+    {
+        saveManager.WipeKeySave();
+        saveManager.WipeWorlds();
+
+        PackedScene world = GD.Load<PackedScene>(Paths.GetWorldPath(0));
+        GetTree().ChangeSceneToPacked(world);
+    }
+
+    private void OnSettingsButtonPressed()
+    {
+        PackedScene settingsScene = GD.Load<PackedScene>(Paths.GetSettingsPath());
+        GetTree().ChangeSceneToPacked(settingsScene);
+    }
+
+    private void OnContinueButtonPressed()
+    {
+        PackedScene world = GD.Load<PackedScene>(Paths.GetWorldPath(saveManager.LoadLastWorld()));
+        GetTree().ChangeSceneToPacked(world);
+    }
+
+    private void OnQuitGameButtonPressed()
+    {
+        PackedScene quitGameScene = GD.Load<PackedScene>(Paths.GetQuitGamePath());
+        GetTree().ChangeSceneToPacked(quitGameScene);
+    }
+}
