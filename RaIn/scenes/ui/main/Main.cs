@@ -8,6 +8,7 @@ public partial class Main : Control
     private Button newWorldButton;
     private Button continueWorldButton;
     private Button settingsButton;
+    private Button quitGameButton;
 
     private MarginContainer continueMC;
 
@@ -19,7 +20,6 @@ public partial class Main : Control
         GetNodes();
         CreateContinueButton();
 
-        GD.Print("Load Settigs called");
         LoadSettings();
 
         ConnectToSignals();
@@ -29,22 +29,18 @@ public partial class Main : Control
     {
         newWorldButton = GetNode<Button>("HBoxContainer/VBoxCenter/NewWorldMC/NewWorldButton");
         settingsButton = GetNode<Button>("HBoxContainer/VBoxCenter/SettingsMC/SettingsButton");
+        quitGameButton = GetNode<Button>("HBoxContainer/VBoxCenter/QuitGameMC/QuitButton");
 
         continueMC = GetNode<MarginContainer>("HBoxContainer/VBoxCenter/ContinueMC");
     }
 
     private void ConnectToSignals()
     {
-        if (newWorldButton != null && settingsButton != null)
-        {
-            newWorldButton.Pressed += OnNewWorldButtonPressed;
-            settingsButton.Pressed += OnSettingsButtonPressed;
-        }
+        if (newWorldButton != null) newWorldButton.Pressed += OnNewWorldButtonPressed;
+        if (settingsButton != null) settingsButton.Pressed += OnSettingsButtonPressed;
+        if (quitGameButton != null) quitGameButton.Pressed += OnQuitGameButtonPressed;
 
-        if (continueWorldButton != null)
-        {
-            continueWorldButton.Pressed += OnContinueButtonPressed;
-        }
+        if (continueWorldButton != null) continueWorldButton.Pressed += OnContinueButtonPressed;
     }
 
     private void LoadSettings()
@@ -77,7 +73,7 @@ public partial class Main : Control
         continueMC.AddChild(continueWorldButton);
 
         // Button Setup
-        continueWorldButton.Text = "Continue";
+        continueWorldButton.Text = "Continue Game";
         continueWorldButton.AddThemeFontSizeOverride("font_size", 64);
         continueMC.AddThemeConstantOverride("margin_top", 16);
         continueMC.AddThemeConstantOverride("margin_bottom", 16);
@@ -94,7 +90,6 @@ public partial class Main : Control
 
     private void OnSettingsButtonPressed()
     {
-        // TODO: Create Settings Scene
         PackedScene settingsScene = GD.Load<PackedScene>(Paths.GetSettingsPath());
         GetTree().ChangeSceneToPacked(settingsScene);
     }
@@ -103,5 +98,11 @@ public partial class Main : Control
     {
         PackedScene world = GD.Load<PackedScene>(Paths.GetWorldPath(saveManager.LoadLastWorld()));
         GetTree().ChangeSceneToPacked(world);
+    }
+
+    private void OnQuitGameButtonPressed()
+    {
+        PackedScene quitGameScene = GD.Load<PackedScene>(Paths.GetQuitGamePath());
+        GetTree().ChangeSceneToPacked(quitGameScene);
     }
 }

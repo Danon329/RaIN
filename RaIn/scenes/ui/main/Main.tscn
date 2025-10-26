@@ -22,7 +22,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxLef t" type="VBoxContainer" parent="HBoxContainer"]
+[node name="VBoxLeft" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -53,16 +53,27 @@ theme_override_constants/margin_bottom = 16
 [node name="NewWorldButton" type="Button" parent="HBoxContainer/VBoxCenter/NewWorldMC"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
-text = "New World"
+text = "New Game"
 
 [node name="SettingsMC" type="MarginContainer" parent="HBoxContainer/VBoxCenter"]
 layout_mode = 2
 theme_override_constants/margin_top = 16
+theme_override_constants/margin_bottom = 16
 
 [node name="SettingsButton" type="Button" parent="HBoxContainer/VBoxCenter/SettingsMC"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "Settings
+"
+
+[node name="QuitGameMC" type="MarginContainer" parent="HBoxContainer/VBoxCenter"]
+layout_mode = 2
+theme_override_constants/margin_top = 16
+
+[node name="QuitButton" type="Button" parent="HBoxContainer/VBoxCenter/QuitGameMC"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Quit Game
 "
 
 [node name="VBoxRight" type="VBoxContainer" parent="HBoxContainer"]
