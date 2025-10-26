@@ -3,23 +3,45 @@ using Godot.Collections;
 
 namespace Game.UI;
 
+[GlobalClass]
 public partial class Settings : Control
 {
+    internal static Settings s_instance;
+    public static Settings Instance => s_instance;
+
     private OptionButton windowResolution;
     private CheckButton fullscreenButton;
     private Button returnButton;
     private HSlider generalSound;
 
-    private long currentResolutionIndex;
-    private bool isFullscreen;
-    private Dictionary<int, float> currentVolume;
+    private long currentResolutionIndex = 1;
+    private bool isFullscreen = (DisplayServer.WindowGetMode() == DisplayServer.WindowMode.Fullscreen) ? true : false;
+    private Dictionary<int, float> currentVolume = new Dictionary<int, float>
+    {
+        {0, AudioServer.GetBusVolumeLinear(0)}
+    };
 
     private const string CONFIG_FILE_PATH = "user://settings.cfg";
+
+    public Settings()
+    {
+        if (s_instance != null)
+        {
+            return;
+        }
+        else
+        {
+            s_instance = this;
+        }
+    }
 
     public override void _Ready()
     {
         GetNodes();
         ConnectSignals();
+
+        CheckForLoad();
+        ApplyVisuals();
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -46,6 +68,16 @@ public partial class Settings : Control
         generalSound.ValueChanged += OnGeneralSoundValueChanged;
     }
 
+    private void ApplyVisuals()
+    {
+        fullscreenButton.ButtonPressed = isFullscreen;
+
+        if (!fullscreenButton.ButtonPressed)
+            windowResolution.Selected = (int)currentResolutionIndex;
+
+        generalSound.Value = currentVolume[0];
+    }
+
     public void CheckForLoad()
     {
         if (FileAccess.FileExists(CONFIG_FILE_PATH))
@@ -60,24 +92,30 @@ public partial class Settings : Control
         GetTree().ChangeSceneToPacked(mainScene);
     }
 
-    private void OnWindowSizeSelected(long index) // FUCK ALL OF THESE TYPES. EVERYWHERE IT SAYS INT BUT ACTUALLY ITS LONG: BECAUSE GDSCRIPT INT == 64bit and C# INT == 32bit; long == 64 bit
+    private void SetSelectedRes(long id)
+    {
+        currentResolutionIndex = id;
+        if (windowResolution != null) windowResolution.Selected = (int)id;
+    }
+
+    private void SetWindowSize(long index)
     {
         switch (index)
         {
             case 0:
-                currentResolutionIndex = index;
+                SetSelectedRes(index);
                 DisplayServer.WindowSetSize(new Vector2I(1280, 720));
                 break;
             case 1:
-                currentResolutionIndex = index;
+                SetSelectedRes(index);
                 DisplayServer.WindowSetSize(new Vector2I(1920, 1080));
                 break;
             case 2:
-                currentResolutionIndex = index;
+                SetSelectedRes(index);
                 DisplayServer.WindowSetSize(new Vector2I(2560, 1440));
                 break;
             case 3:
-                currentResolutionIndex = index;
+                SetSelectedRes(index);
                 DisplayServer.WindowSetSize(new Vector2I(3840, 2160));
                 break;
             default:
@@ -87,34 +125,58 @@ public partial class Settings : Control
         SaveSettings();
     }
 
-    private void OnFullscreenButtonToggled(bool isToggled)
+    private void SetIsFullscreen(bool value)
     {
-        if ((bool)isToggled)
+        isFullscreen = value;
+        if (fullscreenButton != null) fullscreenButton.ButtonPressed = value;
+    }
+
+    private void SetFullscreen(bool value)
+    {
+        if (value)
         {
-            isFullscreen = true;
+            SetIsFullscreen(value);
             DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
         }
         else
         {
-            isFullscreen = false;
+            SetIsFullscreen(value);
             DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
         }
 
         SaveSettings();
     }
 
+    private void SetVolume(int busIdx, float value)
+    {
+        // TODO: Test Audio
+        AudioServer.SetBusVolumeLinear(busIdx, value);
+        currentVolume[busIdx] = value;
+
+        SaveSettings();
+    }
+
+    private void OnWindowSizeSelected(long index) // FUCK ALL OF THESE TYPES. EVERYWHERE IT SAYS INT BUT ACTUALLY ITS LONG: BECAUSE GDSCRIPT INT == 64bit and C# INT == 32bit; long == 64 bit
+    {
+        SetWindowSize(index);
+        ApplyVisuals();
+    }
+
+    private void OnFullscreenButtonToggled(bool isToggled)
+    {
+        SetFullscreen(isToggled);
+        ApplyVisuals();
+    }
+
     private void OnReturnButtonPressed()
     {
         ChangeSceneToMain();
+        ApplyVisuals();
     }
 
     private void OnGeneralSoundValueChanged(double value)
     {
-        // TODO: Test Audio
-        AudioServer.SetBusVolumeLinear(0, (float)value);
-        currentVolume[0] = (float)value;
-
-        SaveSettings();
+        SetVolume(0, (float)value);
     }
 
     private void SaveSettings()
@@ -134,12 +196,11 @@ public partial class Settings : Control
 
         Error err = config.Load(CONFIG_FILE_PATH);
 
-        // TODO: Check why config file is loading into default
         if (err == Error.Ok)
         {
-            currentResolutionIndex = (long)config.GetValue("video", "resolution", 1);
-            isFullscreen = (bool)config.GetValue("video", "fullscreen", false);
-            currentVolume = (Dictionary<int, float>)config.GetValue("audio", "volume", new Dictionary<int, float>());
+            currentResolutionIndex = (long)config.GetValue("video", "resolution");
+            isFullscreen = (bool)config.GetValue("video", "fullscreen");
+            currentVolume = (Dictionary<int, float>)config.GetValue("audio", "volume");
         }
 
         LoadSettingsIntoVars();
@@ -148,15 +209,12 @@ public partial class Settings : Control
 
     private void LoadSettingsIntoVars()
     {
-        OnWindowSizeSelected(currentResolutionIndex);
-        OnFullscreenButtonToggled(isFullscreen);
+        if (!isFullscreen) SetWindowSize(currentResolutionIndex);
+        SetFullscreen(isFullscreen);
 
-        if (MissFunc.GetDictionarySize((Dictionary)currentVolume) != 0)
+        foreach (var (busIdx, value) in currentVolume)
         {
-            foreach (var (busID, value) in currentVolume)
-            {
-                AudioServer.SetBusVolumeLinear(busID, value);
-            }
+            SetVolume(busIdx, value);
         }
     }
 }

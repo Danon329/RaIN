@@ -42,10 +42,9 @@ layout_mode = 2
 [node name="TabContainer" type="TabContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 36
-current_tab = 1
+current_tab = 0
 
 [node name="Video" type="MarginContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -64,7 +63,6 @@ label_settings = SubResource("LabelSettings_wcv47")
 [node name="ResolutionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/TabContainer/Video/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme = SubResource("Theme_wcv47")
-selected = 1
 item_count = 4
 popup/item_0/text = "1280x720"
 popup/item_0/id = 0
@@ -83,6 +81,7 @@ theme_override_icons/unchecked = ExtResource("2_7oi5m")
 text = "Fullscreen"
 
 [node name="Music" type="MarginContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 

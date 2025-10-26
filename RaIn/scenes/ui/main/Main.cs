@@ -19,6 +19,7 @@ public partial class Main : Control
         GetNodes();
         CreateContinueButton();
 
+        GD.Print("Load Settigs called");
         LoadSettings();
 
         ConnectToSignals();
@@ -48,8 +49,11 @@ public partial class Main : Control
 
     private void LoadSettings()
     {
-        Settings settings = new Settings();
-        settings.CheckForLoad();
+        if (Settings.Instance == null)
+        {
+            Settings settings = new Settings();
+            Settings.Instance.CallThreadSafe("CheckForLoad");
+        }
     }
 
     private bool CheckForExistingWorld()
