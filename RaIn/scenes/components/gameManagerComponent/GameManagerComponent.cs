@@ -175,7 +175,8 @@ public partial class GameManagerComponent : Node
         // Check for all locks opened
         if (CheckForGameFinished())
         {
-            GD.Print("Game Finished");
+            PackedScene gameFinishedScene = GD.Load<PackedScene>("res://scenes/ui/gameFinished/GameFinished.tscn");
+            GetTree().ChangeSceneToPacked(gameFinishedScene);
         }
     }
 
