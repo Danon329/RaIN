@@ -1,7 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://b13mjmpnlw106"]
+[gd_scene load_steps=6 format=3 uid="uid://b13mjmpnlw106"]
 
 [ext_resource type="Script" uid="uid://drte7ou1s5ob" path="res://scenes/player/Player.cs" id="1_gfjak"]
 [ext_resource type="Texture2D" uid="uid://swiypjke2p5t" path="res://assets/spritesheets/spritesheet-characters-default.png" id="1_wr5hl"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gfjak"]
+atlas = ExtResource("1_wr5hl")
+region = Rect2(0, 640, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wr5hl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gfjak")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gfjak"]
 size = Vector2(80, 100)
@@ -10,10 +25,10 @@ size = Vector2(80, 100)
 collision_layer = 2
 script = ExtResource("1_gfjak")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_wr5hl")
-hframes = 8
-vframes = 8
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_wr5hl")
+animation = &"idle"
+autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 12)

@@ -12,6 +12,7 @@ gameManager = NodePath("GameManagerComponent")
 player = NodePath("Player")
 
 [node name="GameManagerComponent" parent="." instance=ExtResource("1_0fhgc")]
+World = 2
 
 [node name="WorldTransitionComponent" parent="." node_paths=PackedStringArray("gameManagerComponent", "player") instance=ExtResource("2_0aih4")]
 gameManagerComponent = NodePath("../GameManagerComponent")

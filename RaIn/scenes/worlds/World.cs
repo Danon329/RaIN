@@ -16,32 +16,29 @@ public partial class World : Node
     [Export]
     public Player player;
 
-    public virtual Godot.Collections.Dictionary<int, Variant> Save()
+    public virtual Godot.Collections.Dictionary<string, Variant> Save()
     {
-        Godot.Collections.Dictionary<int, Variant> saves =
-            new Godot.Collections.Dictionary<int, Variant>();
+        Godot.Collections.Dictionary<string, Variant> saves =
+            new Godot.Collections.Dictionary<string, Variant>();
 
         if (player != null && gameManager != null)
         {
-            saves[0] = gameManager.IsKeyCollected();
-            saves[1] = gameManager.IsLockOpened();
-            saves[2] = player.GlobalPosition;
+            saves["is_key_collectd"] = gameManager.IsKeyCollected();
+            saves["is_lock_opened"] = gameManager.IsLockOpened();
+            saves["global_position_player"] = player.GlobalPosition;
         }
 
         return saves;
 
     }
 
-    public virtual void Load(Godot.Collections.Dictionary<int, Variant> dict)
+    public virtual void Load(Godot.Collections.Dictionary<string, Variant> dict)
     {
         if (!MissFunc.IsDictEmpty((Godot.Collections.Dictionary)dict))
         {
-            if (player != null && gameManager != null)
-            {
-                gameManager.SetKeyCollected((bool)dict[0]);
-                gameManager.SetLockOpened((bool)dict[1]);
-                player.GlobalPosition = (Vector2)dict[2];
-            }
+            gameManager.SetKeyCollected((bool)dict["is_key_collectd"]);
+            gameManager.SetLockOpened((bool)dict["is_lock_opened"]);
+            player.GlobalPosition = (Vector2)dict["global_position_player"];
         }
     }
 }

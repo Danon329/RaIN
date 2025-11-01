@@ -69,7 +69,7 @@ public partial class SaveManagerComponent : Node
     // Save World
     public void SaveWorld(World world, int worldID)
     {
-        Godot.Collections.Dictionary<int, Variant> saveVars = world.Save();
+        Godot.Collections.Dictionary<string, Variant> saveVars = world.Save();
 
         using FileAccess saveFile = FileAccess.Open(worldSavePaths[worldID], FileAccess.ModeFlags.Write);
         saveFile.StoreVar(saveVars);
@@ -77,13 +77,13 @@ public partial class SaveManagerComponent : Node
 
     public void LoadWorld(World world, int worldID)
     {
-        Godot.Collections.Dictionary<int, Variant> saveVars =
-            new Godot.Collections.Dictionary<int, Variant>();
+        Godot.Collections.Dictionary<string, Variant> saveVars =
+            new Godot.Collections.Dictionary<string, Variant>();
 
         if (FileAccess.FileExists(worldSavePaths[worldID]))
         {
             using FileAccess loadFile = FileAccess.Open(worldSavePaths[worldID], FileAccess.ModeFlags.Read);
-            saveVars = (Godot.Collections.Dictionary<int, Variant>)loadFile.GetVar();
+            saveVars = (Godot.Collections.Dictionary<string, Variant>)loadFile.GetVar();
         }
 
         world.Load(saveVars);
@@ -91,7 +91,7 @@ public partial class SaveManagerComponent : Node
 
     public void WipeWorlds()
     {
-        Godot.Collections.Dictionary<int, Variant> emptyDict = new Godot.Collections.Dictionary<int, Variant>();
+        Godot.Collections.Dictionary<string, Variant> emptyDict = new Godot.Collections.Dictionary<string, Variant>();
 
         foreach (string worldSavePath in worldSavePaths)
         {

@@ -1,11 +1,6 @@
-[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://xsvcgxbbmx0f"]
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://xsvcgxbbmx0f"]
 
-[ext_resource type="PackedScene" uid="uid://c6twfcyrtqv6i" path="res://scenes/items/lock/Lock.tscn" id="1_0qi2e"]
 [ext_resource type="Texture2D" uid="uid://sxmj0havmm36" path="res://assets/spritesheets/spritesheet-tiles-default.png" id="1_wh5fr"]
-
-[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_m4t3g"]
-resource_name = "Keys"
-scenes/1/scene = ExtResource("1_0qi2e")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l1fh5"]
 texture = ExtResource("1_wh5fr")
@@ -334,4 +329,3 @@ tile_size = Vector2i(64, 64)
 physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 0
 sources/1 = SubResource("TileSetAtlasSource_l1fh5")
-sources/0 = SubResource("TileSetScenesCollectionSource_m4t3g")

@@ -1,21 +1,17 @@
-[gd_scene load_steps=8 format=4 uid="uid://bjp2bqcf6w1vx"]
+[gd_scene load_steps=6 format=4 uid="uid://bjp2bqcf6w1vx"]
 
 [ext_resource type="PackedScene" uid="uid://bl5scdsfprknh" path="res://scenes/components/gameManagerComponent/GameManagerComponent.tscn" id="1_nlqox"]
 [ext_resource type="Script" uid="uid://cwyqwuho3a5de" path="res://scenes/worlds/greenWorld/GreenWorld.cs" id="1_s5r1t"]
 [ext_resource type="PackedScene" uid="uid://b13mjmpnlw106" path="res://scenes/player/Player.tscn" id="2_l1fh5"]
 [ext_resource type="PackedScene" uid="uid://xdqr2y2kx5cm" path="res://scenes/components/worldTransitionComponent/WorldTransitionComponent.tscn" id="3_ldmwi"]
 [ext_resource type="TileSet" uid="uid://xsvcgxbbmx0f" path="res://resources/WorldTiles.tres" id="3_nlqox"]
-[ext_resource type="PackedScene" uid="uid://c6twfcyrtqv6i" path="res://scenes/items/lock/Lock.tscn" id="6_evq88"]
-[ext_resource type="PackedScene" uid="uid://dljdort81vqu2" path="res://scenes/items/key/Key.tscn" id="6_xiqbk"]
 
 [node name="GreenWorld" type="Node" node_paths=PackedStringArray("gameManager", "player")]
 script = ExtResource("1_s5r1t")
 gameManager = NodePath("GameManagerComponent")
 player = NodePath("Player")
 
-[node name="GameManagerComponent" parent="." node_paths=PackedStringArray("key", "lockItem") instance=ExtResource("1_nlqox")]
-key = NodePath("../Key")
-lockItem = NodePath("../Lock")
+[node name="GameManagerComponent" parent="." instance=ExtResource("1_nlqox")]
 
 [node name="WorldTransitionComponent" parent="." node_paths=PackedStringArray("gameManagerComponent", "player") instance=ExtResource("3_ldmwi")]
 gameManagerComponent = NodePath("../GameManagerComponent")
@@ -24,16 +20,7 @@ player = NodePath("../Player")
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 tile_map_data = PackedByteArray("AAAAAAAAAQAGAA0AAAAAAAEAAQAGAA0AAAAAAAIAAQAGAA0AAAAAAAMAAQAGAA0AAAAAAAQAAQAGAA0AAAAAAAUAAQAGAA0AAAAAAAYAAQAGAA0AAAAAAAcAAQAGAA0AAAAAAAgAAQAGAA0AAAAAAAkAAQAGAA0AAAABAAkAAQAGAA0AAAACAAkAAQAGAA0AAAADAAkAAQAGAA0AAAAEAAkAAQAGAA0AAAAFAAkAAQAGAA0AAAAGAAkAAQAGAA0AAAAHAAkAAQAGAA0AAAAIAAkAAQAGAA0AAAAJAAkAAQAGAA0AAAAKAAkAAQAGAA0AAAALAAkAAQAGAA0AAAAMAAkAAQAGAA0AAAANAAkAAQAGAA0AAAAOAAkAAQAGAA0AAAAPAAkAAQAGAA0AAAAQAAkAAQAGAA0AAAARAAkAAQAGAA0AAAASAAkAAQAGAA0AAAAUAAkAAQAGAA0AAAAVAAkAAQAGAA0AAAATAAkAAQAGAA0AAAAWAAkAAQAGAA0AAAAXAAkAAQAGAA0AAAAYAAkAAQAGAA0AAAA=")
 tile_set = ExtResource("3_nlqox")
-collision_visibility_mode = 1
 
 [node name="Player" parent="." instance=ExtResource("2_l1fh5")]
 position = Vector2(283, 141)
 safe_margin = 2.0
-
-[node name="Key" parent="." instance=ExtResource("6_xiqbk")]
-position = Vector2(694, 437)
-KeyType = 3
-
-[node name="Lock" parent="." instance=ExtResource("6_evq88")]
-position = Vector2(1344, 512)
-LockType = 3

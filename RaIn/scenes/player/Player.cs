@@ -14,7 +14,7 @@ public partial class Player : CharacterBody2D
     private float gravity = 1200f;
 
     private Timer coyoteTimer;
-    private Sprite2D sprite;
+    private AnimatedSprite2D sprite;
 
     private float direction = 0;
     private int breakFactor = 10;
@@ -26,7 +26,7 @@ public partial class Player : CharacterBody2D
     public override void _Ready()
     {
         coyoteTimer = GetNode<Timer>("CoyoteTimer");
-        sprite = GetNode<Sprite2D>("Sprite2D");
+        sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 
         coyoteTimer.Timeout += OnCoyoteTimerTimeout;
     }
